@@ -9,7 +9,7 @@ void bst_insert (struct BSTNode **head, char *key, int val);
 
 int bst_find (struct BSTNode *head, char *key);
 
-void bst_contains (strust BSTNode *head, char *key);
+int bst_contains (struct BSTNode *head, char *key);
 
 void bst_destroy (struct BSTNode *head);
 

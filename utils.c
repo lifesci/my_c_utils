@@ -1,4 +1,5 @@
 #include<stdlib.h>
+#include "utils.h"
 
 void merge(int *arr, int l, int r) {
     int tmp_arr[r - l];

@@ -90,6 +90,19 @@ int bst_find (struct BSTNode *head, char *key) {
     }
 }
 
+int bst_contains (struct BSTNode *head, char *key) {
+    if (head == NULL) return 0;
+
+    int cmp = strcmp(key, head->key);
+    if (cmp == 0) {
+        return 1;
+    } else if (cmp < 0) {
+        return bst_find(head->left, key);
+    } else {
+        return bst_find(head->right, key);
+    }
+}
+
 void bst_destroy(struct BSTNode *head) {
     if (head == NULL) return;
     bst_destroy(head->left);

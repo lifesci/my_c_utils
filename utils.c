@@ -1,7 +1,9 @@
+#include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #include "utils.h"
 
-void merge(int *arr, int l, int r) {
+void merge (int *arr, int l, int r) {
     int tmp_arr[r - l];
     int mid = (r + l)/2;
     int l_ind = l;
@@ -37,11 +39,60 @@ void mergesort (int *arr, int l, int r) {
     merge(arr, l, r);
 }
 
-int *sort(int *arr, int len) {
+int *sort (int *arr, int len) {
     int *sorted = malloc(len*sizeof(int));
     for (int i = 0; i < len; i++) {
         sorted[i] = arr[i];
     }
     mergesort(sorted, 0, len);
     return sorted;
+}
+
+struct BSTNode {
+    char *key;
+    int val;
+    struct BSTNode *left;
+    struct BSTNode *right;
+};
+
+struct BSTNode *new_bst_node (char *key, int val) {
+    struct BSTNode *node = malloc(sizeof(struct BSTNode));
+    node->key = key;
+    node->val = val;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+void bst_insert (struct BSTNode **head, char *key, int val) {
+    if (*head == NULL) {
+        *head = new_bst_node(key, val);
+    } else {
+        int cmp = strcmp(key, (*head)->key);
+        if (cmp == 0) {
+            (*head)->val = val;
+        } else if (cmp < 0) {
+            bst_insert(&((*head)->left), key, val);
+        } else {
+            bst_insert(&((*head)->right), key, val);
+        }
+    }
+}
+
+int bst_find (struct BSTNode *head, char *key) {
+    int cmp = strcmp(key, head->key);
+    if (cmp == 0) {
+        return head->val;
+    } else if (cmp < 0) {
+        return bst_find(head->left, key);
+    } else {
+        return bst_find(head->right, key);
+    }
+}
+
+void bst_destroy(struct BSTNode *head) {
+    if (head == NULL) return;
+    bst_destroy(head->left);
+    bst_destroy(head->right);
+    free(head);
 }

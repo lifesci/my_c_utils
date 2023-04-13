@@ -48,16 +48,11 @@ int *sort (int *arr, int len) {
     return sorted;
 }
 
-struct BSTNode {
-    char *key;
-    int val;
-    struct BSTNode *left;
-    struct BSTNode *right;
-};
-
 struct BSTNode *new_bst_node (char *key, int val) {
     struct BSTNode *node = malloc(sizeof(struct BSTNode));
-    node->key = key;
+    char *key_copy = malloc(sizeof(char)*strlen(key));
+    strcpy(key_copy, key);
+    node->key = key_copy;
     node->val = val;
     node->left = NULL;
     node->right = NULL;
@@ -90,16 +85,16 @@ int bst_find (struct BSTNode *head, char *key) {
     }
 }
 
-int bst_contains (struct BSTNode *head, char *key) {
-    if (head == NULL) return 0;
+bool bst_contains (struct BSTNode *head, char *key) {
+    if (head == NULL) return false;
 
     int cmp = strcmp(key, head->key);
     if (cmp == 0) {
-        return 1;
+        return true;
     } else if (cmp < 0) {
-        return bst_find(head->left, key);
+        return bst_contains(head->left, key);
     } else {
-        return bst_find(head->right, key);
+        return bst_contains(head->right, key);
     }
 }
 
@@ -107,5 +102,6 @@ void bst_destroy(struct BSTNode *head) {
     if (head == NULL) return;
     bst_destroy(head->left);
     bst_destroy(head->right);
+    free(head->key);
     free(head);
 }
